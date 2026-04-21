@@ -1,0 +1,51 @@
+@{
+    ViewData["Title"] = "Sala de Espera";
+    string codigo = ViewBag.Codigo;
+}
+
+<div class="page-sala">
+    <div class="sala-container">
+        <div class="sala-header">
+            <div class="logo-mini">🎨</div>
+            <h1>Sala de Espera</h1>
+        </div>
+
+        <div class="codigo-display" id="codigo-display">
+            <span class="codigo-label">Código de invitación</span>
+            <div class="codigo-box" id="codigo-box">
+                <span class="codigo-text" id="codigo-text">@codigo</span>
+                <button class="btn-copy" id="btn-copy" onclick="copiarCodigo()" title="Copiar código">
+                    📋
+                </button>
+            </div>
+            <span class="codigo-hint">Comparte este código con tus amigos</span>
+        </div>
+
+        <div class="jugadores-lista" id="jugadores-lista">
+            <h2>
+                <span class="pulse-dot"></span>
+                Jugadores conectados (<span id="total-jugadores">0</span>)
+            </h2>
+            <ul id="lista-jugadores">
+                <!-- Se llena dinámicamente -->
+            </ul>
+        </div>
+
+        <div class="sala-actions">
+            <button class="btn btn-primary btn-lg btn-pulse" id="btn-iniciar" onclick="iniciarJuego()" style="display: none;">
+                <span class="btn-icon">🚀</span>
+                ¡Iniciar Juego!
+            </button>
+            <p class="waiting-text" id="waiting-text">
+                <span class="loading-dots">Esperando al anfitrión</span>
+            </p>
+        </div>
+
+        <a href="/" class="btn btn-ghost" id="btn-volver-inicio">← Volver al inicio</a>
+    </div>
+</div>
+
+<script>
+    // Pasar datos de la vista al JS
+    window.SALA_CODIGO = '@codigo';
+</script>

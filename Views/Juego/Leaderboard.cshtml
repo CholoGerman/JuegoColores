@@ -1,0 +1,50 @@
+@model List<Juego.Models.Partida>
+@{
+    ViewData["Title"] = "Leaderboard (Top Récords)";
+}
+
+<div class="page-historial">
+    <div class="historial-container">
+        <div class="historial-header">
+            <a href="/" class="btn btn-ghost" id="btn-volver">← Volver al inicio</a>
+            <div class="historial-title">
+                <div class="logo-mini">👑</div>
+                <h1>Top Team Records</h1>
+            </div>
+        </div>
+
+        @if (Model == null || Model.Count == 0)
+        {
+            <div class="empty-historial">
+                <div class="empty-icon">⏳</div>
+                <h2>Aún no hay récords</h2>
+                <p>¡Gana una partida y guarda el nombre de tu equipo para inmortalizarte acá!</p>
+                <a href="/" class="btn btn-primary" id="btn-crear-primera">Ir a jugar</a>
+            </div>
+        }
+        else
+        {
+            <div class="historial-grid">
+                @for (int i = 0; i < Model.Count; i++)
+                {
+                    var partida = Model[i];
+                    string medal = i == 0 ? "🥇" : (i == 1 ? "🥈" : (i == 2 ? "🥉" : ""));
+
+                    <div class="historial-card" style="@(i < 3 ? "border: 1px solid var(--accent-gold); box-shadow: 0 4px 20px rgba(255, 215, 0, 0.15);" : "")">
+                        <div class="historial-card-header">
+                            <span class="historial-codigo" style="font-size: 1.2rem;">
+                                @medal #@(i + 1) @partida.NombreEquipoRecord
+                            </span>
+                            <span class="historial-status status-victoria">@partida.TiempoSegundos s</span>
+                        </div>
+                        <div class="historial-card-body">
+                            <p style="text-align: center; color: var(--text-muted); font-size: 0.9rem; margin-top: 10px;">
+                                Logrado el @partida.HoraInicio.ToLocalTime().ToString("dd/MM/yyyy HH:mm") en la sala @(partida.Ronda?.CodigoInvitacion) (Anfitrión: @(partida.Ronda?.NombreAnfitrion))
+                            </p>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</div>

@@ -1,0 +1,155 @@
+@{
+    ViewData["Title"] = "Partida en Curso";
+    string codigo = ViewBag.Codigo;
+}
+
+<div class="page-partida">
+    <!-- Game Active Screen -->
+    <div class="partida-container" id="partida-container">
+        <div class="partida-header">
+            <div class="header-left">
+                <span class="game-code-mini">🎨 @codigo</span>
+            </div>
+            <div class="header-center">
+                <div class="cronometro" id="cronometro">
+                    <span class="crono-icon">⏱️</span>
+                    <span class="crono-time" id="crono-time">00:00</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="puntuacion" id="puntuacion-display">
+                    <span class="punt-label">Puntuación</span>
+                    <span class="punt-value" id="punt-value">0/0</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Seccion de la Ronda: Colores quemados de partidas anteriores -->
+        <div class="colores-quemados" id="quemados-section" style="display: none; text-align: center; margin-bottom: 1rem; color: var(--text-muted); font-size: 0.9rem;">
+            ⚠️ <strong>Colores ya quemados en esta sala:</strong> 
+            <span id="quemados-lista"></span>
+        </div>
+
+        <!-- Turno actual -->
+        <div class="turno-actual" id="turno-section">
+            <div class="turno-label">Turno de</div>
+            <div class="turno-nombre" id="turno-nombre">—</div>
+            <div class="turno-badge" id="turno-badge" style="display: none;">¡Es tu turno!</div>
+        </div>
+
+        <!-- Input de color (solo visible para jugador con turno) -->
+        <div class="color-input-section" id="color-input-section" style="display: none;">
+            <div class="color-input-wrapper">
+                <input type="text" id="color-input" placeholder="Escribe un color..." maxlength="30" autocomplete="off" />
+                <button class="btn btn-primary" id="btn-enviar-color" onclick="enviarColor()">
+                    Decir Color 🎨
+                </button>
+            </div>
+
+            <!-- Paleta de colores rápidos -->
+            <div class="color-palette" id="color-palette">
+                <!-- Se pobla en game.js o dejamos esta por defecto -->
+                <button class="color-btn" data-color="Rojo" style="--btn-color: #E74C3C" onclick="seleccionarColor('Rojo')">Rojo</button>
+                <button class="color-btn" data-color="Azul" style="--btn-color: #3498DB" onclick="seleccionarColor('Azul')">Azul</button>
+                <button class="color-btn" data-color="Verde" style="--btn-color: #2ECC71" onclick="seleccionarColor('Verde')">Verde</button>
+                <button class="color-btn" data-color="Amarillo" style="--btn-color: #F1C40F; color: #333;" onclick="seleccionarColor('Amarillo')">Amarillo</button>
+                <button class="color-btn" data-color="Naranja" style="--btn-color: #E67E22" onclick="seleccionarColor('Naranja')">Naranja</button>
+                <button class="color-btn" data-color="Morado" style="--btn-color: #9B59B6" onclick="seleccionarColor('Morado')">Morado</button>
+                <button class="color-btn" data-color="Rosa" style="--btn-color: #FF69B4" onclick="seleccionarColor('Rosa')">Rosa</button>
+                <button class="color-btn" data-color="Celeste" style="--btn-color: #87CEEB; color: #333;" onclick="seleccionarColor('Celeste')">Celeste</button>
+                <button class="color-btn" data-color="Negro" style="--btn-color: #2C3E50" onclick="seleccionarColor('Negro')">Negro</button>
+                <button class="color-btn" data-color="Blanco" style="--btn-color: #FFFFFF; color: #333;" onclick="seleccionarColor('Blanco')">Blanco</button>
+                <button class="color-btn" data-color="Gris" style="--btn-color: #95A5A6" onclick="seleccionarColor('Gris')">Gris</button>
+                <button class="color-btn" data-color="Marrón" style="--btn-color: #8B4513" onclick="seleccionarColor('Marrón')">Marrón</button>
+                <button class="color-btn" data-color="Turquesa" style="--btn-color: #1ABC9C" onclick="seleccionarColor('Turquesa')">Turquesa</button>
+                <button class="color-btn" data-color="Dorado" style="--btn-color: #FFD700; color: #333;" onclick="seleccionarColor('Dorado')">Dorado</button>
+                <button class="color-btn" data-color="Violeta" style="--btn-color: #8B00FF" onclick="seleccionarColor('Violeta')">Violeta</button>
+                <button class="color-btn" data-color="Fucsia" style="--btn-color: #FF00FF" onclick="seleccionarColor('Fucsia')">Fucsia</button>
+                <button class="color-btn" data-color="Coral" style="--btn-color: #FF7F50" onclick="seleccionarColor('Coral')">Coral</button>
+                <button class="color-btn" data-color="Lavanda" style="--btn-color: #E6E6FA; color: #333;" onclick="seleccionarColor('Lavanda')">Lavanda</button>
+                <button class="color-btn" data-color="Esmeralda" style="--btn-color: #50C878" onclick="seleccionarColor('Esmeralda')">Esmeralda</button>
+                <button class="color-btn" data-color="Salmón" style="--btn-color: #FA8072" onclick="seleccionarColor('Salmón')">Salmón</button>
+            </div>
+        </div>
+
+        <!-- Botón Siguiente (solo anfitrión) -->
+        <div class="siguiente-section" id="siguiente-section" style="display: none;">
+            <button class="btn btn-accent btn-lg" id="btn-siguiente" onclick="siguienteTurno()">
+                Siguiente Jugador ➡️
+            </button>
+        </div>
+
+        <!-- Colores usados -->
+        <div class="colores-usados" id="colores-section">
+            <h3>🎨 Colores dichos</h3>
+            <div class="colores-grid" id="colores-grid">
+                <p class="empty-colors" id="empty-colors">Aún no se han dicho colores</p>
+            </div>
+        </div>
+
+        <!-- Lista de jugadores -->
+        <div class="jugadores-partida" id="jugadores-partida">
+            <h3>👥 Jugadores</h3>
+            <div class="jugadores-grid" id="jugadores-grid">
+                <!-- Se llena dinámicamente -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Overlay de fin de juego -->
+    <div class="game-over-overlay" id="game-over-overlay" style="display: none;">
+        <div class="game-over-card" id="game-over-card">
+            <div class="game-over-icon" id="game-over-icon">🏆</div>
+            <h1 class="game-over-title" id="game-over-title">¡Fin del Juego!</h1>
+            <p class="game-over-message" id="game-over-message"></p>
+            <p class="game-over-motivo" id="game-over-motivo" style="color: var(--danger); font-size: 0.9rem; margin-top:-10px;"></p>
+
+            <div class="game-over-stats">
+                <div class="stat-item">
+                    <span class="stat-label">Puntuación</span>
+                    <span class="stat-value" id="final-puntuacion">—</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Tiempo</span>
+                    <span class="stat-value" id="final-tiempo">—</span>
+                </div>
+            </div>
+
+            <!-- Record Team Name Input (Solo para victoria) -->
+            <div class="record-section" id="record-section" style="display: none; text-align: left; margin: 1.5rem 0;">
+                <label for="record-name" style="display: block; margin-bottom: 8px; font-weight: bold; color: var(--accent-gold);">🏆 ¡Guardar Récord de Tiempo!</label>
+                <div style="display: flex; gap: 10px;">
+                    <input type="text" id="record-name" placeholder="Nombre de tu grupo..." class="form-input" style="flex:1" autocomplete="off" />
+                    <button class="btn btn-primary" id="btn-guardar-record" onclick="guardarNombreRecord()">Guardar</button>
+                </div>
+                <small id="record-status" style="color: var(--success); display: none; margin-top: 5px;">¡Guardado en el Leaderboard!</small>
+            </div>
+
+            <div class="game-over-resumen" id="game-over-resumen">
+                <h3>Resumen</h3>
+                <div class="resumen-lista" id="resumen-lista">
+                    <!-- Dinamico -->
+                </div>
+            </div>
+
+            <!-- Botones Host vs Invitados -->
+            <div class="game-over-actions host-actions" id="host-actions" style="display: none;">
+                <button class="btn btn-primary btn-lg" id="btn-nueva-partida" onclick="iniciarNuevaPartidaSala()">
+                    🎮 Jugar de Nuevo (Misma Sala)
+                </button>
+                <button class="btn btn-danger" id="btn-cerrar-ronda" onclick="cerrarRonda()">
+                    🛑 Finalizar Ronda
+                </button>
+            </div>
+            
+            <div class="game-over-actions guest-actions" id="guest-actions" style="display: none;">
+                <p style="color: var(--text-muted); font-style: italic;">Esperando a que el anfitrión inicie otra partida...</p>
+                <a href="/" class="btn btn-ghost">Salir de la sala</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    window.PARTIDA_CODIGO = '@codigo';
+</script>

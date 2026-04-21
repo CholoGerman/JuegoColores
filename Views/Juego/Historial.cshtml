@@ -1,0 +1,95 @@
+@model List<Juego.Models.Partida>
+@{
+    ViewData["Title"] = "Historial de Partidas";
+}
+
+<div class="page-historial">
+    <div class="historial-container">
+        <div class="historial-header">
+            <a href="/" class="btn btn-ghost" id="btn-volver">← Volver al inicio</a>
+            <div class="historial-title">
+                <div class="logo-mini">📊</div>
+                <h1>Historial de Partidas</h1>
+            </div>
+        </div>
+
+        @if (Model == null || Model.Count == 0)
+        {
+            <div class="empty-historial">
+                <div class="empty-icon">🎮</div>
+                <h2>No hay partidas registradas</h2>
+                <p>¡Crea una partida para empezar a jugar!</p>
+                <a href="/" class="btn btn-primary" id="btn-crear-primera">Crear Partida</a>
+            </div>
+        }
+        else
+        {
+            <div class="historial-grid">
+                @foreach (Juego.Models.Partida partida in Model)
+                {
+                    string statusClass = partida.Estado == Juego.Models.EstadoPartida.Victoria ? "status-victoria" : "status-derrota";
+                    string statusText = partida.Estado == Juego.Models.EstadoPartida.Victoria ? "🏆 Victoria" : "💔 Derrota";
+
+                    <div class="historial-card">
+                        <div class="historial-card-header">
+                            <span class="historial-codigo">Sala: @(partida.Ronda?.CodigoInvitacion ?? "")</span>
+                            <span class="historial-status @statusClass">@statusText</span>
+                        </div>
+                        <div class="historial-card-body">
+                            <div class="historial-info">
+                                <div class="info-item">
+                                    <span class="info-label">📅 Fecha</span>
+                                    <span class="info-value">@partida.HoraInicio.ToLocalTime().ToString("dd/MM/yyyy HH:mm")</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">👤 Anfitrión</span>
+                                    <span class="info-value">@(partida.Ronda?.NombreAnfitrion ?? "")</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">⏱️ Tiempo</span>
+                                    <span class="info-value">@partida.TiempoSegundos s</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">🎯 Puntuación</span>
+                                    <span class="info-value">@partida.Puntuacion</span>
+                                </div>
+                                @if(!string.IsNullOrEmpty(partida.NombreEquipoRecord))
+                                {
+                                    <div class="info-item">
+                                        <span class="info-label">🏆 Récord</span>
+                                        <span class="info-value" style="color: var(--accent-gold);">@partida.NombreEquipoRecord</span>
+                                    </div>
+                                }
+                            </div>
+                            
+                            @if (partida.Ronda?.Jugadores != null && partida.Ronda.Jugadores.Any())
+                            {
+                                <div class="historial-jugadores">
+                                    <h4>Jugador y Color en el turno final</h4>
+                                    <div class="jugadores-detail">
+                                        @foreach (Juego.Models.Jugador jugador in partida.Ronda.Jugadores)
+                                        {
+                                            var turno = partida.Turnos?.FirstOrDefault(t => t.JugadorId == jugador.Id);
+                                            // En caso de derrota por este jugador, capaz no llegó a guardar turno en Turnos si no que quedó en la memoria
+                                            // Para simplificar mostramos lo que tengamos guardado en la BD
+                                            string colorDesc = turno?.Color ?? "—";
+
+                                            <div class="jugador-detail-item">
+                                                <span class="jugador-name">
+                                                    @(jugador.EsAnfitrion ? "👑" : "👤") @jugador.Nombre
+                                                </span>
+                                                <span class="jugador-color" style="@(colorDesc == "—" ? "opacity: 0.4" : "")">
+                                                    @colorDesc
+                                                </span>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</div>

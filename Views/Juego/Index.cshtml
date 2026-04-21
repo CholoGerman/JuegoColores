@@ -1,0 +1,91 @@
+@{
+    ViewData["Title"] = "Inicio";
+}
+
+<div class="page-home">
+    <!-- Animated background particles -->
+    <div class="particles" id="particles"></div>
+
+    <header class="home-header">
+        <div class="logo-container">
+            <div class="logo-icon">🎨</div>
+            <h1 class="logo-text">Colores</h1>
+            <p class="logo-subtitle">El juego de no repetir</p>
+        </div>
+    </header>
+
+    <main class="home-main">
+        <div class="home-cards">
+            <!-- Crear Partida -->
+            <div class="card card-create" id="card-create">
+                <div class="card-icon">🏠</div>
+                <h2>Crear Partida</h2>
+                <p>Crea una sala y comparte el código con tus amigos</p>
+                <div class="form-group">
+                    <label for="host-name">Tu nombre</label>
+                    <input type="text" id="host-name" placeholder="Ej: Ana" maxlength="30" autocomplete="off" />
+                </div>
+                <button class="btn btn-primary btn-lg" id="btn-crear" onclick="crearPartida()">
+                    <span class="btn-icon">🎮</span>
+                    Crear Partida
+                </button>
+            </div>
+
+            <!-- Unirse a Partida -->
+            <div class="card card-join" id="card-join">
+                <div class="card-icon">🎯</div>
+                <h2>Unirse a Partida</h2>
+                <p>Ingresa el código que te compartió el anfitrión</p>
+                <div class="form-group">
+                    <label for="join-name">Tu nombre</label>
+                    <input type="text" id="join-name" placeholder="Ej: Luis" maxlength="30" autocomplete="off" />
+                </div>
+                <div class="form-group">
+                    <label for="join-code">Código de invitación</label>
+                    <input type="text" id="join-code" placeholder="Ej: AB12CD" maxlength="6"
+                           style="text-transform: uppercase; letter-spacing: 4px; text-align: center; font-size: 1.3rem;"
+                           autocomplete="off" />
+                </div>
+                <button class="btn btn-secondary btn-lg" id="btn-unirse" onclick="unirseAPartida()">
+                    <span class="btn-icon">🚀</span>
+                    Unirse
+                </button>
+            </div>
+        </div>
+
+        <!-- Historial y Leaderboard links -->
+        <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 1rem;">
+            <a href="/Juego/Historial" class="historial-link" id="link-historial">
+                📊 Ver historial de rondas
+            </a>
+            <a href="/Juego/Leaderboard" class="historial-link" id="link-leaderboard" style="background: rgba(255, 215, 0, 0.1); border-color: var(--accent-gold); color: white;">
+                👑 Leaderboard (Récords)
+            </a>
+        </div>
+
+    </main>
+
+    <footer class="home-footer">
+        <div class="rules-preview">
+            <h3>🎲 ¿Cómo se juega?</h3>
+            <div class="rules-grid">
+                <div class="rule-item">
+                    <span class="rule-number">1</span>
+                    <span>El anfitrión crea una partida y comparte el código</span>
+                </div>
+                <div class="rule-item">
+                    <span class="rule-number">2</span>
+                    <span>Los jugadores se unen con el código</span>
+                </div>
+                <div class="rule-item">
+                    <span class="rule-number">3</span>
+                    <span>Cada jugador dice un color sin repetir</span>
+                </div>
+                <div class="rule-item">
+                    <span class="rule-number">4</span>
+                    <span>¡Si alguien repite, todos pierden!</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
