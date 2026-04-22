@@ -64,5 +64,10 @@ namespace Juego.Controllers
 
             return View(records);
         }
+        // GET: /Juego/Stack
+        public IActionResult Stack()
+        {
+            return View();
+        }
     }
 }

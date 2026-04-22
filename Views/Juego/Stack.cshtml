@@ -1,0 +1,72 @@
+@{
+    ViewData["Title"] = "Tech Stack";
+}
+
+<div class="page-historial">
+    <div class="historial-container" style="max-width: 900px;">
+        <div class="historial-header">
+            <a href="/" class="btn btn-ghost" id="btn-volver">← Volver al inicio</a>
+            <div class="historial-title">
+                <div class="logo-mini">⚙️</div>
+                <h1>Stack y Arquitectura</h1>
+            </div>
+        </div>
+
+        <div class="historial-grid" style="grid-template-columns: 1fr;">
+            <!-- Backend -->
+            <div class="historial-card">
+                <div class="historial-card-header" style="background: var(--gradient-primary); justify-content: center;">
+                    <h2 style="font-size: 1.5rem; color: white;">Backend & Framework</h2>
+                </div>
+                <div class="historial-card-body" style="padding: 30px;">
+                    <ul style="list-style: none; display: flex; flex-direction: column; gap: 15px;">
+                        <li><strong>.NET 10:</strong> Versión más reciente de la plataforma de Microsoft usada para crear un servidor web ultra veloz.</li>
+                        <li><strong>C# 13:</strong> Lenguaje principal tipado utilizado en todo el núcleo del servidor.</li>
+                        <li><strong>ASP.NET Core MVC:</strong> Patrón Modelo-Vista-Controlador que sirve como esqueleto de la aplicación, renderizando Razor Views.</li>
+                        <li><strong>Entity Framework Core:</strong> ORM que traduce objetos C# a esquemas SQL. Implementado en arquitectura Code-First con migraciones nativas.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Websockets & Comunicación -->
+            <div class="historial-card">
+                <div class="historial-card-header" style="background: var(--gradient-secondary); justify-content: center;">
+                    <h2 style="font-size: 1.5rem; color: var(--text-dark);">Tiempo Real (Real-Time)</h2>
+                </div>
+                <div class="historial-card-body" style="padding: 30px;">
+                    <ul style="list-style: none; display: flex; flex-direction: column; gap: 15px;">
+                        <li><strong>SignalR:</strong> Tecnología principal de comunicación bidireccional mediante WebSockets. Mantiene los jugadores sincronizados segundo a segundo y transmite notificaciones instantáneas de salas y puntuación.</li>
+                        <li><strong>In-Memory Thread-Safe State:</strong> El `GameStateManager` en Singleton protege el estado de múltiples usuarios y múltiples salas (rondas) interactuando simultáneamente usando semáforos (`SemaphoreSlim`).</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Frontend -->
+            <div class="historial-card">
+                <div class="historial-card-header" style="background: var(--gradient-warm); justify-content: center;">
+                    <h2 style="font-size: 1.5rem; color: white;">Frontend & UI</h2>
+                </div>
+                <div class="historial-card-body" style="padding: 30px;">
+                    <ul style="list-style: none; display: flex; flex-direction: column; gap: 15px;">
+                        <li><strong>Vanilla JavaScript (ES6):</strong> La capa cliente del juego está manejada con JS nativo, con gestión avanzada de Sessions (SessionStorage) para evitar pérdida de progreso al recargar.</li>
+                        <li><strong>Custom CSS + Glassmorphism:</strong> Sistema visual hecho a mano (sin Tailwind o Bootstrap). Colores dinámicos, gradientes responsivos y animaciones de confeti fluidas diseñadas en `:root` properties y `@keyframes`.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Infraestructura -->
+            <div class="historial-card">
+                <div class="historial-card-header" style="background: var(--gradient-gold); justify-content: center;">
+                    <h2 style="font-size: 1.5rem; color: var(--text-dark);">Persistencia e Infraestructura</h2>
+                </div>
+                <div class="historial-card-body" style="padding: 30px;">
+                    <ul style="list-style: none; display: flex; flex-direction: column; gap: 15px;">
+                        <li><strong>SQLite Local Database:</strong> Motor base de datos relacional para persistir los récords, historial de partidas, salas terminadas y jugadores pasados.</li>
+                        <li><strong>Docker:</strong> Soporte de contenedor multi-stage build (Compilación / Publicación) nativo sobre Alpine.</li>
+                        <li><strong>Git & Render.com:</strong> Integración continua de código versionado directamente conectada con Cloud PaaS Web Services de Render, arrancando .NET sin esfuerzo.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
